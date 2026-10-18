@@ -1,0 +1,39 @@
+{
+    "name": "levit/blade-components",
+    "description": "Biblioteca corporativa de componentes Blade para Laravel.",
+    "license": "proprietary",
+    "type": "library",
+    "require": {
+        "php": "^8.3|^8.4|^8.5",
+        "illuminate/contracts": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^11.0|^12.0|^13.0",
+        "illuminate/view": "^11.0|^12.0|^13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0",
+        "phpunit/phpunit": "^11.0|^12.0|^13.0",
+        "mockery/mockery": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Select\\Components\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Select\\Components\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Select\\Components\\SelectComponentsServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
