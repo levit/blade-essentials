@@ -15,18 +15,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: ['8.3', '8.4']
-        laravel: ['11.*', '12.*']
+        php: ['8.5']
+        laravel: ['13.*']
         dependency-version: [prefer-stable]
         include:
-          - laravel: '11.*'
-            testbench: '^9.0'
-          - laravel: '12.*'
-            testbench: '^10.0'
+          - laravel: '13.*'
+            testbench: '^11.0'
           - os: ubuntu-latest
-            php: '8.3'
-            laravel: '11.*'
-            testbench: '^9.0'
+            php: '8.5'
+            laravel: '13.*'
+            testbench: '^11.0'
             dependency-version: prefer-lowest
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} (${{ matrix.dependency-version }})
