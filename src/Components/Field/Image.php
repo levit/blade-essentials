@@ -80,7 +80,7 @@ class Image extends BaseFieldComponent
             onlyView: $onlyView,
         );
 
-        $target = $id ?? ($nameField ?? ($name ?? \App\Support\StringSupport::nameRandom()));
+        $target = $id ?? ($nameField ?? ($name ?? \Select\Components\Support\StringSupport::nameRandom()));
         $this->targetId = (string) $target;
         $this->id_image = 'preview_img_' . $this->targetId;
         $this->id_container = 'preview_container_' . $this->targetId;

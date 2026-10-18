@@ -38,20 +38,20 @@ class Messages extends Component
     /**
      * Retorna as mensagens flash ativas da sessão mapeadas com tipos e metadados.
      *
-     * @return array<int, array{type: \App\Enums\MessageTypeEnum, message: string, class: string, icon: string}>
+     * @return array<int, array{type: \Select\Components\Enums\MessageTypeEnum, message: string, class: string, icon: string}>
      */
     public function flashMessages(): array
     {
         $messages = [];
 
-        foreach (\App\Enums\MessageTypeEnum::cases() as $type) {
+        foreach (\Select\Components\Enums\MessageTypeEnum::cases() as $type) {
             $flashMessage = session($type->value);
 
-            if (! $flashMessage && $type === \App\Enums\MessageTypeEnum::ERROR) {
+            if (! $flashMessage && $type === \Select\Components\Enums\MessageTypeEnum::ERROR) {
                 $flashMessage = session('error');
             }
 
-            if (! $flashMessage && $type === \App\Enums\MessageTypeEnum::SUCCESS) {
+            if (! $flashMessage && $type === \Select\Components\Enums\MessageTypeEnum::SUCCESS) {
                 $flashMessage = session('status');
             }
 

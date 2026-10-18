@@ -67,7 +67,7 @@ class UserAgent extends BaseFieldComponent
         );
 
         $rawAgent = $this->resolvedValue ?? $this->agent;
-        $this->parsed = \App\Support\UserAgentSupport::parse($rawAgent);
+        $this->parsed = \Select\Components\Support\UserAgentSupport::parse($rawAgent);
         $this->fullText = (string) ($this->parsed['full'] ?? '');
     }
 

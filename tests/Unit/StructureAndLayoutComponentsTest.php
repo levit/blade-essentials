@@ -489,14 +489,14 @@ class StructureAndLayoutComponentsTest extends TestCase
 
     public function test_component_id_prefix_enum_generates_random_id(): void
     {
-        $id1 = \App\Enums\ComponentIdPrefixEnum::INPUT->generateId();
-        $id2 = \App\Enums\ComponentIdPrefixEnum::INPUT->generateId();
+        $id1 = \Select\Components\Enums\ComponentIdPrefixEnum::INPUT->generateId();
+        $id2 = \Select\Components\Enums\ComponentIdPrefixEnum::INPUT->generateId();
 
         $this->assertStringStartsWith('input_', $id1);
         $this->assertStringEndsWith('_id', $id1);
         $this->assertNotSame($id1, $id2);
 
-        $idCol = \App\Enums\ComponentIdPrefixEnum::COL->generateId();
+        $idCol = \Select\Components\Enums\ComponentIdPrefixEnum::COL->generateId();
         $this->assertStringStartsWith('col_', $idCol);
         $this->assertStringEndsWith('_id', $idCol);
     }
@@ -504,7 +504,7 @@ class StructureAndLayoutComponentsTest extends TestCase
     public function test_component_id_respects_explicit_id(): void
     {
         $custom = 'meu_id_customizado';
-        $resolved = \App\Enums\ComponentIdPrefixEnum::SELECT->generateId($custom);
+        $resolved = \Select\Components\Enums\ComponentIdPrefixEnum::SELECT->generateId($custom);
 
         $this->assertSame($custom, $resolved);
 

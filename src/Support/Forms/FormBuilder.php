@@ -174,7 +174,7 @@ class FormBuilder
      */
     public function isRequired(string $field, ?bool $explicit = null): bool
     {
-        return \App\Support\FormSupport::isRequired($field, $this->modelClass, $this, $explicit);
+        return \Select\Components\Support\FormSupport::isRequired($field, $this->modelClass, $this, $explicit);
     }
 
     /**
