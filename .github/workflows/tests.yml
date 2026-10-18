@@ -1,0 +1,64 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        php: ['8.3', '8.4']
+        laravel: ['11.*', '12.*']
+        dependency-version: [prefer-stable]
+        include:
+          - laravel: '11.*'
+            testbench: '^9.0'
+          - laravel: '12.*'
+            testbench: '^10.0'
+          - os: ubuntu-latest
+            php: '8.3'
+            laravel: '11.*'
+            testbench: '^9.0'
+            dependency-version: prefer-lowest
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} (${{ matrix.dependency-version }})
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath, intl, gd, iconv
+          coverage: none
+
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Select dependencies
+        run: |
+          composer require "orchestra/testbench:${{ matrix.testbench }}" "illuminate/view:${{ matrix.laravel }}" "illuminate/support:${{ matrix.laravel }}" "illuminate/contracts:${{ matrix.laravel }}" --no-interaction --no-update
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependency-version }}
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --display-deprecations --display-warnings
+
