@@ -8,20 +8,23 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-24.04]
         php: ['8.5']
         laravel: ['13.*']
         dependency-version: [prefer-stable]
         include:
           - laravel: '13.*'
             testbench: '^11.0'
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             php: '8.5'
             laravel: '13.*'
             testbench: '^11.0'
