@@ -4,15 +4,18 @@
     "license": "proprietary",
     "type": "library",
     "require": {
-        "php": "^8.3|^8.4|^8.5",
+        "php": ">=8.3",
         "illuminate/contracts": "^11.0|^12.0|^13.0",
         "illuminate/support": "^11.0|^12.0|^13.0",
         "illuminate/view": "^11.0|^12.0|^13.0"
     },
     "require-dev": {
+        "mockery/mockery": "^1.6",
         "orchestra/testbench": "^9.0|^10.0",
-        "phpunit/phpunit": "^11.0|^12.0|^13.0",
-        "mockery/mockery": "^1.6"
+        "phpunit/phpunit": "^11.0|^12.0|^13.0"
+    },
+    "suggest": {
+        "illuminate/database": "Permite inferir regras de validação e preenchimento automático a partir de Models Eloquent (^11.0|^12.0|^13.0)."
     },
     "autoload": {
         "psr-4": {
@@ -30,6 +33,9 @@
                 "Select\\Components\\SelectComponentsServiceProvider"
             ]
         }
+    },
+    "config": {
+        "sort-packages": true
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
