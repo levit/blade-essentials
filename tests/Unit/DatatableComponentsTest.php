@@ -4,13 +4,26 @@ declare(strict_types=1);
 
 namespace Select\Components\Tests\Unit;
 
-use Select\Components\Enums\ConvocacaoBlocoStatusEnum;
 use Select\Components\Components\Datatable\Filters;
 use Select\Components\Components\Datatable\Table;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Select\Components\Tests\TestCase;
+
+enum StatusFiltroTesteEnum: string
+{
+    case ATIVO = 'ativo';
+    case INATIVO = 'inativo';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::ATIVO => 'Ativo',
+            self::INATIVO => 'Inativo',
+        };
+    }
+}
 
 class DatatableComponentsTest extends TestCase
 {
@@ -222,7 +235,7 @@ class DatatableComponentsTest extends TestCase
             [
                 'action' => $action,
                 'clearRoute' => $clearRoute,
-                'statusEnum' => ConvocacaoBlocoStatusEnum::PUBLICADO,
+                'statusEnum' => StatusFiltroTesteEnum::ATIVO,
             ]
         );
 
@@ -234,20 +247,20 @@ class DatatableComponentsTest extends TestCase
         $this->assertStringContainsString('name="date_to"', $html);
         $this->assertStringContainsString('href="/admin/usuarios/limpar"', $html);
         $this->assertStringContainsString('Campo Extra', $html);
-        $this->assertStringContainsString(ConvocacaoBlocoStatusEnum::PUBLICADO->label(), $html);
+        $this->assertStringContainsString(StatusFiltroTesteEnum::ATIVO->label(), $html);
     }
 
     public function test_filters_classe_precalcula_status_options_e_resolved_clear_route(): void
     {
         $component = new Filters(
             action: '/produtos',
-            statuses: [ConvocacaoBlocoStatusEnum::PUBLICADO, ConvocacaoBlocoStatusEnum::CONCLUIDO],
+            statuses: [StatusFiltroTesteEnum::ATIVO, StatusFiltroTesteEnum::INATIVO],
             iniciarOcultado: true,
         );
 
         $this->assertSame('none', $component->displayStyle);
         $this->assertSame('/produtos?limpar=1', $component->resolvedClearRoute);
-        $this->assertArrayHasKey(ConvocacaoBlocoStatusEnum::PUBLICADO->value, $component->statusOptions);
-        $this->assertSame(ConvocacaoBlocoStatusEnum::PUBLICADO->label(), $component->statusOptions[ConvocacaoBlocoStatusEnum::PUBLICADO->value]);
+        $this->assertArrayHasKey(StatusFiltroTesteEnum::ATIVO->value, $component->statusOptions);
+        $this->assertSame(StatusFiltroTesteEnum::ATIVO->label(), $component->statusOptions[StatusFiltroTesteEnum::ATIVO->value]);
     }
 }

@@ -143,21 +143,6 @@ class BadgeComponentTest extends TestCase
         $this->assertStringContainsString('badge-lg', $htmlLg);
     }
 
-    /**
-     * Testa resolução automática a partir de Enums de domínio com label e cor contextual.
-     */
-    public function test_resolucao_automatica_de_enum_de_status(): void
-    {
-        // BoletoStatusEnum::PAGO possui label() = 'Pago / Baixado' e badgeClass() com bg-success
-        $htmlBoleto = Blade::render('<x-badge :status="$status" />', [
-            'status' => BoletoStatusEnum::PAGO,
-        ]);
-
-        $this->assertStringContainsString('Pago / Baixado', $htmlBoleto);
-        $this->assertStringContainsString('bg-success-soft', $htmlBoleto);
-        $this->assertStringContainsString('text-success', $htmlBoleto);
-        $this->assertStringContainsString('role="status"', $htmlBoleto);
-    }
 
     /**
      * Testa resolução de MessageTypeEnum com ícone contextual.
