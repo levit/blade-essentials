@@ -1,5 +1,5 @@
 {
-    "name": "softtan/blade-components",
+    "name": "softtan/blade-essentials",
     "description": "Biblioteca corporativa de componentes Blade para Laravel.",
     "license": "proprietary",
     "type": "library",
