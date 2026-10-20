@@ -1,5 +1,5 @@
 {
-    "name": "levit/blade-components",
+    "name": "softtan/blade-components",
     "description": "Biblioteca corporativa de componentes Blade para Laravel.",
     "license": "proprietary",
     "type": "library",
