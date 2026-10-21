@@ -1,11 +1,11 @@
-# 🧩 Blade Components
+# 🧩 Blade Essentials
 
 [![PHP Version](https://img.shields.io/badge/PHP-%5E8.3-777bb4.svg?style=flat-square&logo=php)](https://www.php.net/)
 [![Laravel](https://img.shields.io/badge/Laravel-11%20%7C%2012%20%7C%2013-ff2d20.svg?style=flat-square&logo=laravel)](https://laravel.com/)
 [![License: Proprietary](https://img.shields.io/badge/license-proprietary-lightgrey.svg?style=flat-square)](composer.json)
 [![Tests](https://img.shields.io/badge/tests-PHPUnit-blue.svg?style=flat-square)](phpunit.xml)
 
-**Blade Components** é uma biblioteca corporativa de componentes Blade para aplicações Laravel. O pacote reúne campos de formulário, elementos de interface, tabelas e componentes de layout para reutilizar padrões visuais e comportamentais.
+**Blade Essentials** é uma biblioteca corporativa de componentes Blade para aplicações Laravel. O pacote reúne campos de formulário, elementos de interface, tabelas e componentes de layout para reutilizar padrões visuais e comportamentais.
 
 Os componentes integram-se às views Blade e podem ser personalizados por meio das views publicáveis e da configuração do pacote.
 
@@ -29,18 +29,18 @@ Adicione o pacote ao projeto via [Composer](https://getcomposer.org/):
 composer require softtan/blade-essentials
 ```
 
-O provider `Select\Components\SelectComponentsServiceProvider` é descoberto automaticamente pelo Laravel. Não é necessário registrá-lo manualmente em aplicações com package discovery habilitado.
+O provider `Select\Essentials\SelectEssentialsServiceProvider` é descoberto automaticamente pelo Laravel. Não é necessário registrá-lo manualmente em aplicações com package discovery habilitado.
 
 Para publicar a configuração:
 
 ```bash
-php artisan vendor:publish --tag=select-components-config
+php artisan vendor:publish --tag=select-essentials-config
 ```
 
 Para publicar as views e personalizá-las na aplicação:
 
 ```bash
-php artisan vendor:publish --tag=select-components-views
+php artisan vendor:publish --tag=select-essentials-views
 ```
 
 ---
@@ -149,7 +149,7 @@ Views de componentes podem adicionar dependências às stacks Blade `styles` e `
 
 O componente de mapas usa Leaflet e OpenStreetMap. A tabela interativa carrega Simple-DataTables quando `jsDatatable` está habilitado. O componente de ícones suporta Bootstrap Icons, Feather, Font Awesome, Material Icons, Ionicons, Remix Icon e Heroicons. Informe `library` ou use um prefixo reconhecido no nome do ícone (por exemplo, `bi-search`) para escolher a biblioteca explicitamente.
 
-O arquivo `config/select-components.php` contém as opções:
+O arquivo `config/select-essentials.php` contém as opções:
 
 ```php
 return [
@@ -160,7 +160,7 @@ return [
 
 Na implementação atual, esses dois valores ainda não controlam os componentes: ícones sem biblioteca/prefixo usam Feather, e a sugestão de e-mail é controlada pelo atributo `enableSuggestion` do `<x-field.email>` (habilitado por padrão).
 
-O pacote também registra a publicação `select-components-assets`; consulte a versão instalada do pacote para saber quais arquivos de assets ela disponibiliza (a distribuição pode não incluir arquivos CSS/JS próprios).
+O pacote também registra a publicação `select-essentials-assets`; consulte a versão instalada do pacote para saber quais arquivos de assets ela disponibiliza (a distribuição pode não incluir arquivos CSS/JS próprios).
 
 | Opção | Padrão | Descrição |
 | --- | --- | --- |
