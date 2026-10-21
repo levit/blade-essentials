@@ -26,7 +26,7 @@ Alguns componentes também dependem de bibliotecas específicas, como Leaflet pa
 Adicione o pacote ao projeto via [Composer](https://getcomposer.org/):
 
 ```bash
-composer require levit/blade-components
+composer require softtan/blade-essentials
 ```
 
 O provider `Select\Components\SelectComponentsServiceProvider` é descoberto automaticamente pelo Laravel. Não é necessário registrá-lo manualmente em aplicações com package discovery habilitado.
