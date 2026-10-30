@@ -20,6 +20,7 @@ use Select\Components\Components\Modal\Modal as ModalComponent;
 use Select\Components\Components\Window\Content as WindowContent;
 use Select\Components\Components\Window\Crud as WindowCrud;
 use Select\Components\Components\Window\Header as WindowHeader;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Select\Components\Tests\TestCase;
@@ -432,6 +433,21 @@ class StructureAndLayoutComponentsTest extends TestCase
 
         $this->assertStringContainsString('Salvar', $html);
         $this->assertStringContainsString(route('usuarios.create'), $html);
+    }
+
+    public function test_form_actions_uses_post_as_html_method_for_spoofed_methods(): void
+    {
+        $formBuilder = FormBuilder::edit('Editar Usuário', 'Editar', new class extends Model {}, 'usuarios', 1);
+        $formBuilder->addButton(ButtonBuilder::submit('Atualizar', '/atualizar-usuario'));
+
+        $html = Blade::render(
+            '<x-form.actions :form="$form" />',
+            ['form' => $formBuilder]
+        );
+
+        $this->assertStringContainsString('Atualizar', $html);
+        $this->assertStringContainsString('formmethod="POST"', $html);
+        $this->assertStringNotContainsString('formmethod="PUT"', $html);
     }
 
     // ==========================================

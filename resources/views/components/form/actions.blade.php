@@ -6,7 +6,9 @@
     $routeMethod = 'POST';
     if ($form !== null) {
         try {
-            $routeMethod = $form->getMethod();
+            // formmethod só aceita GET/POST; PUT/DELETE dependem do _method spoofing.
+            $method = strtoupper($form->getMethod());
+            $routeMethod = in_array($method, ['GET', 'POST'], true) ? $method : 'POST';
         } catch (\Throwable) {
             $routeMethod = 'POST';
         }
