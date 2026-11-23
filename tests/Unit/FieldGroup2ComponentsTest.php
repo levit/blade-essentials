@@ -29,6 +29,10 @@ class FieldGroup2ComponentsTest extends TestCase
         $this->assertStringContainsString('required', $html);
         $this->assertStringContainsString('Data de Nascimento', $html);
         $this->assertStringContainsString('flatpickr', $html);
+        $this->assertStringContainsString('input-group', $html);
+        $this->assertStringContainsString('datepicker-toggle', $html);
+        $this->assertStringContainsString('data-datepicker-toggle="#datepicker_data-nascimento_id"', $html);
+        $this->assertStringContainsString('bi-calendar3', $html);
     }
 
     public function test_datepicker_formats_carbon_instance(): void
@@ -39,6 +43,34 @@ class FieldGroup2ComponentsTest extends TestCase
         $this->assertStringContainsString('value="25/12/2026"', $html);
     }
 
+    public function test_datepicker_custom_icon_and_prepend_position(): void
+    {
+        $html = Blade::render('<x-field.datepicker nameField="data_inicio" icon="bi-calendar-event" iconPosition="prepend" />');
+
+        $this->assertStringContainsString('input-group', $html);
+        $this->assertStringContainsString('bi-calendar-event', $html);
+        // Verifica se o botão do toggle aparece antes do input
+        $buttonPos = strpos($html, 'data-datepicker-toggle');
+        $inputPos = strpos($html, '<input');
+        $this->assertLessThan($inputPos, $buttonPos);
+    }
+
+    public function test_datepicker_without_icon(): void
+    {
+        $html = Blade::render('<x-field.datepicker nameField="data_sem_icone" :showIcon="false" />');
+
+        $this->assertStringNotContainsString('input-group', $html);
+        $this->assertStringNotContainsString('data-datepicker-toggle', $html);
+        $this->assertStringContainsString('name="data_sem_icone"', $html);
+    }
+
+    public function test_datepicker_icon_only_mode(): void
+    {
+        $html = Blade::render('<x-field.datepicker nameField="data_icon_only" :iconOnly="true" />');
+
+        $this->assertStringContainsString('data-icon-only="true"', $html);
+    }
+
     public function test_datepicker_disabled_with_value_renders_hidden(): void
     {
         $html = Blade::render('<x-field.datepicker nameField="data_disabled" value="2026-10-10" disabled="true" />');
@@ -47,6 +79,8 @@ class FieldGroup2ComponentsTest extends TestCase
         $this->assertStringContainsString('type="hidden"', $html);
         $this->assertStringContainsString('name="data_disabled"', $html);
         $this->assertStringContainsString('value="2026-10-10"', $html);
+        // O botão de toggle também deve conter disabled
+        $this->assertMatchesRegularExpression('/<button[^>]*disabled/i', $html);
     }
 
     public function test_datetime_component_renders_correctly(): void

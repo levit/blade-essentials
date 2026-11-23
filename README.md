@@ -9,6 +9,8 @@
 
 Os componentes integram-se às views Blade e podem ser personalizados por meio das views publicáveis e da configuração do pacote.
 
+> 📖 **Documentação Completa:** Para a referência detalhada de todos os atributos, tipos e exemplos práticos de cada componente, acesse a [**Documentação em docs/**](docs/README.md).
+
 ---
 
 ## 📋 Requisitos
@@ -113,15 +115,19 @@ Campos de formulário não substituem a validação no servidor: valide os dados
 
 ## 🗺️ Mapa de Componentes Disponíveis
 
-| Grupo | Namespace / tags | Componentes |
+Acesse os links abaixo para ver a documentação com atributos e exemplos de cada categoria:
+
+| Grupo | Namespace / tags | Componentes e Links de Documentação |
 | --- | --- | --- |
-| **Formulários** | `<x-field.*>` | `button`, `cep`, `checkbox`, `cpf-cnpj`, `datepicker`, `datetime`, `email`, `file`, `hidden`, `image`, `input`, `input-group`, `ip`, `markdown`, `money`, `number`, `phone`, `radio`, `select`, `select-checkbox`, `switch`, `tags`, `textarea`, `url` e `user-agent`. |
-| **Tabelas** | `<x-datatable.*>` | `table`, `header`, `filters`, `row`, `cell`, `empty` (também `empty-state`) e `actions`. |
-| **Layout** | `<x-box.*>`, `<x-form.*>`, `<x-window.*>` | Linhas, colunas, cards, formulários, ações, cabeçalhos, conteúdo, telas CRUD e modais. |
-| **Modais** | `<x-modal>` | Modal Bootstrap e seu conteúdo (`<x-modal.content>`). |
-| **Mapas** | `<x-maps>` | Mapa interativo com coordenadas ou endereço. |
-| **Elementos de interface** | `<x-misc.*>` | `badge`, `icone`, `image`, `ip`, `kbd`, `label`, `link`, `messages` e `user-agent`. |
-| **Componentes de raiz** | `<x-badge>`, `<x-switch>` | Badge e controle switch. |
+| **Formulários** | `<x-field.*>` | • [Visão Geral e BaseField](docs/fields/overview.md)<br>• [Texto e Conteúdo](docs/fields/inputs.md): `input`, `textarea`, `markdown`, `tags`, `hidden`<br>• [Seleções](docs/fields/selects.md): `select`, `select-checkbox`, `checkbox`, `radio`, `switch`<br>• [Máscaras e Números](docs/fields/masks.md): `money`, `phone`, `cep`, `cpf-cnpj`, `number`<br>• [Datas](docs/fields/dates.md): `datepicker`, `datetime`<br>• [Botões e Grupos](docs/fields/buttons.md): `button`, `input-group`<br>• [Mídia e Redes](docs/fields/media-and-network.md): `file`, `image`, `email`, `url`, `ip`, `user-agent` |
+| **Tabelas** | `<x-datatable.*>` | [Datatables](docs/datatable/datatable.md): `table`, `header`, `filters`, `row`, `cell`, `empty` (ou `empty-state`) e `actions`. |
+| **Layout & Grid** | `<x-box.*>` | [Box e Grid](docs/box/box.md): `row`, `col`, `content` (cards colapsáveis). |
+| **Formulários** | `<x-form.*>` | [Formulários e Ações](docs/form/form.md): `form`, `actions`. |
+| **Janelas CRUD** | `<x-window.*>` | [Window e CRUD](docs/window/window.md): `header`, `content`, `crud`, `modal`. |
+| **Modais** | `<x-modal>` | [Modais](docs/modal/modal.md): `modal`, `modal.content`. |
+| **Mapas** | `<x-maps>` | [Mapas](docs/maps/maps.md): Mapa interativo OpenStreetMap + Leaflet com geocodificação. |
+| **Elementos de interface** | `<x-misc.*>` | [Utilitários e Misc](docs/misc/misc.md): `badge`, `icone`, `image`, `ip`, `kbd`, `label`, `link`, `messages` e `user-agent`. |
+| **Componentes de raiz** | `<x-badge>`, `<x-switch>` | Atalhos para `misc.badge` ([Misc](docs/misc/misc.md)) e `field.switch` ([Selects](docs/fields/selects.md)). |
 
 ---
 

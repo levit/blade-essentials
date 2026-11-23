@@ -4,6 +4,7 @@
  * 
  * Este componente renderiza um label, um input com máscara de data e as mensagens de erro do Laravel.
  * Suporta modo de visualização (browse) que desabilita o campo mas mantém o valor via hidden.
+ * Possui suporte a ícone lateral clicável para alternar a exibição do mini calendário (Flatpickr).
  *
  */
 --}}
@@ -14,21 +15,71 @@
     <input type="hidden" name="{{ $nameField }}" value="{{ $resolvedValue }}">
 @endif
 
-<input
-    type="text"
-    id="{{ $id }}"
-    name="{{ $nameField }}"
-    value="{{ $resolvedValue }}"
-    autocomplete="off"
-    data-datepicker="true"
-    data-format="{{ $format }}"
-    @if($minDate) data-min-date="{{ $minDate }}" @endif
-    @if($maxDate) data-max-date="{{ $maxDate }}" @endif
-    @required($isRequired)
-    @readonly($readonly)
-    @disabled($disabled)
-    {{ $attributes->merge(['class' => $classes]) }}
-/>
+@if($showIcon)
+    <div class="input-group">
+        @if($iconPosition === 'prepend')
+            <button
+                type="button"
+                class="{{ $buttonClass }} datepicker-toggle"
+                data-datepicker-toggle="#{{ $id }}"
+                title="Abrir calendário"
+                aria-label="Abrir calendário"
+                tabindex="-1"
+                @disabled($disabled || $readonly)
+            >
+                <x-misc.icone :icon="$icon" :library="$iconLibrary" />
+            </button>
+        @endif
+
+        <input
+            type="text"
+            id="{{ $id }}"
+            name="{{ $nameField }}"
+            value="{{ $resolvedValue }}"
+            autocomplete="off"
+            data-datepicker="true"
+            data-format="{{ $format }}"
+            @if($minDate) data-min-date="{{ $minDate }}" @endif
+            @if($maxDate) data-max-date="{{ $maxDate }}" @endif
+            @if($iconOnly) data-icon-only="true" @endif
+            @required($isRequired)
+            @readonly($readonly)
+            @disabled($disabled)
+            {{ $attributes->merge(['class' => $classes]) }}
+        />
+
+        @if($iconPosition === 'append')
+            <button
+                type="button"
+                class="{{ $buttonClass }} datepicker-toggle"
+                data-datepicker-toggle="#{{ $id }}"
+                title="Abrir calendário"
+                aria-label="Abrir calendário"
+                tabindex="-1"
+                @disabled($disabled || $readonly)
+            >
+                <x-misc.icone :icon="$icon" :library="$iconLibrary" />
+            </button>
+        @endif
+    </div>
+@else
+    <input
+        type="text"
+        id="{{ $id }}"
+        name="{{ $nameField }}"
+        value="{{ $resolvedValue }}"
+        autocomplete="off"
+        data-datepicker="true"
+        data-format="{{ $format }}"
+        @if($minDate) data-min-date="{{ $minDate }}" @endif
+        @if($maxDate) data-max-date="{{ $maxDate }}" @endif
+        @if($iconOnly) data-icon-only="true" @endif
+        @required($isRequired)
+        @readonly($readonly)
+        @disabled($disabled)
+        {{ $attributes->merge(['class' => $classes]) }}
+    />
+@endif
 
 @if($hasError)
     <div class="invalid-feedback d-block">
@@ -59,13 +110,14 @@
                     // (ou inicializa com clickOpens: false para modo show)
                     const isDisabled = input.hasAttribute('disabled');
                     const isReadonly = input.hasAttribute('readonly');
+                    const isIconOnly = input.hasAttribute('data-icon-only');
                     
-                    flatpickr(input, {
+                    const fp = flatpickr(input, {
                         locale: 'pt',
                         dateFormat: 'd/m/Y',
                         altInput: false,
                         allowInput: !isReadonly && !isDisabled,
-                        clickOpens: !isReadonly && !isDisabled,
+                        clickOpens: !isReadonly && !isDisabled && !isIconOnly,
                         minDate: input.dataset.minDate || null,
                         maxDate: input.dataset.maxDate || null,
                         
@@ -76,6 +128,19 @@
                             }
                         },
                     });
+
+                    // Suporte ao botão de acionamento do calendário
+                    const toggleBtn = input.closest('.input-group')?.querySelector('[data-datepicker-toggle]')
+                        || document.querySelector(`[data-datepicker-toggle="#${CSS.escape(input.id)}"]`);
+
+                    if (toggleBtn) {
+                        toggleBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            if (!isDisabled && !isReadonly && fp) {
+                                fp.toggle();
+                            }
+                        });
+                    }
                 });
             });
         </script>
