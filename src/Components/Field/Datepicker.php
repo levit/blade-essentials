@@ -31,6 +31,7 @@ class Datepicker extends BaseFieldComponent
      * @param bool $disabled Se o campo está desabilitado.
      * @param bool $onlyView Se o campo está em modo somente visualização.
      * @param string $format Formato de exibição da data (ex: 'dd/mm/yyyy').
+     * @param string|null $placeholder Placeholder exibido no campo (padrão 'dd/mm/aaaa').
      * @param string|null $minDate Data mínima permitida.
      * @param string|null $maxDate Data máxima permitida.
      * @param bool $showIcon Se deve exibir o ícone lateral ao campo.
@@ -38,7 +39,7 @@ class Datepicker extends BaseFieldComponent
      * @param string|null $iconLibrary Biblioteca do ícone.
      * @param string $iconPosition Posição do ícone ('append' ou 'prepend').
      * @param bool $iconOnly Se o calendário abre exclusivamente ao clicar no ícone.
-     * @param string $buttonClass Classes CSS do botão do ícone.
+     * @param string $buttonClass Classes CSS do botão do ícone (padrão 'btn btn-primary').
      */
     public function __construct(
         ?string $nameField = null,
@@ -56,6 +57,7 @@ class Datepicker extends BaseFieldComponent
         bool $disabled = false,
         bool $onlyView = false,
         public string $format = 'dd/mm/yyyy',
+        public ?string $placeholder = 'dd/mm/aaaa',
         public ?string $minDate = null,
         public ?string $maxDate = null,
         public bool $showIcon = true,
@@ -63,7 +65,7 @@ class Datepicker extends BaseFieldComponent
         public ?string $iconLibrary = null,
         public string $iconPosition = 'append',
         public bool $iconOnly = false,
-        public string $buttonClass = 'btn btn-outline-secondary',
+        public string $buttonClass = 'btn btn-primary',
     ) {
         parent::__construct(
             nameField: $nameField,

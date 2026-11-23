@@ -24,13 +24,17 @@ class FieldGroup2ComponentsTest extends TestCase
         $this->assertStringContainsString('id="datepicker_data-nascimento_id"', $html);
         $this->assertStringContainsString('name="data_nascimento"', $html);
         $this->assertStringContainsString('value="2026-10-10"', $html);
+        $this->assertStringContainsString('placeholder="dd/mm/aaaa"', $html);
+        $this->assertStringContainsString('maxlength="10"', $html);
         $this->assertStringContainsString('data-datepicker="true"', $html);
         $this->assertStringContainsString('data-format="dd/mm/yyyy"', $html);
         $this->assertStringContainsString('required', $html);
         $this->assertStringContainsString('Data de Nascimento', $html);
         $this->assertStringContainsString('flatpickr', $html);
+        $this->assertStringContainsString('formatDateMask', $html);
+        $this->assertStringContainsString('datepicker-native-fallback', $html);
         $this->assertStringContainsString('input-group', $html);
-        $this->assertStringContainsString('datepicker-toggle', $html);
+        $this->assertStringContainsString('class="btn btn-primary datepicker-toggle"', $html);
         $this->assertStringContainsString('data-datepicker-toggle="#datepicker_data-nascimento_id"', $html);
         $this->assertStringContainsString('bi-calendar3', $html);
     }
@@ -69,6 +73,14 @@ class FieldGroup2ComponentsTest extends TestCase
         $html = Blade::render('<x-field.datepicker nameField="data_icon_only" :iconOnly="true" />');
 
         $this->assertStringContainsString('data-icon-only="true"', $html);
+    }
+
+    public function test_datepicker_custom_button_class_and_placeholder(): void
+    {
+        $html = Blade::render('<x-field.datepicker nameField="data_custom" buttonClass="btn btn-secondary" placeholder="00/00/0000" />');
+
+        $this->assertStringContainsString('class="btn btn-secondary datepicker-toggle"', $html);
+        $this->assertStringContainsString('placeholder="00/00/0000"', $html);
     }
 
     public function test_datepicker_disabled_with_value_renders_hidden(): void

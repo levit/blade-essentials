@@ -15,6 +15,7 @@ Componente completo de seleção de datas integrado ao **Flatpickr**. Oferece m�
 | Atributo | Tipo | Padrão | Descrição |
 | :--- | :--- | :--- | :--- |
 | `format` | `string` | `'dd/mm/yyyy'` | Formato visual de exibição da data. |
+| `placeholder` | `string\|null` | `'dd/mm/aaaa'` | Placeholder padrão exibido no campo com máscara. |
 | `minDate` | `string\|null` | `null` | Data mínima selecionável (formato `'Y-m-d'` ou `'today'`). |
 | `maxDate` | `string\|null` | `null` | Data máxima selecionável. |
 | `showIcon` | `bool` | `true` | Se `true`, renderiza o campo em um `input-group` com botão de ícone lateral. |
@@ -22,7 +23,7 @@ Componente completo de seleção de datas integrado ao **Flatpickr**. Oferece m�
 | `iconLibrary` | `string\|null` | `null` | Biblioteca explícita do ícone (caso não utilize prefixo). |
 | `iconPosition` | `string` | `'append'` | Posição do ícone: `'append'` (à direita) ou `'prepend'` (à esquerda). |
 | `iconOnly` | `bool` | `false` | Se `true`, o calendário abre **exclusivamente** ao clicar no ícone (o input fica reservado à digitação direta sem popup instantâneo). |
-| `buttonClass` | `string` | `'btn btn-outline-secondary'` | Classes CSS do botão que envolve o ícone. |
+| `buttonClass` | `string` | `'btn btn-primary'` | Classes CSS do botão que envolve o ícone (cor preenchida). |
 | *(Herança)* | [BaseFieldComponent](overview.md) | | `nameField`, `label`, `value`, `required`, `disabled`, `readonly`, etc. |
 
 ### Tratamento Automático de Tipos no `value`
