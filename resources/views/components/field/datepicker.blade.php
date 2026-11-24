@@ -5,9 +5,15 @@
  * Este componente renderiza um label, um input com máscara de data brasileira (dd/mm/aaaa) e as mensagens de erro do Laravel.
  * Suporta modo de visualização (browse) que desabilita o campo mas mantém o valor via hidden.
  * Possui suporte a ícone lateral clicável para alternar a exibição do calendário (Flatpickr com fallback nativo).
+ * Totalmente compatível com Content Security Policy (CSP Nonce).
  *
  */
 --}}
+
+@php
+    $cspNonceValue = $cspNonce ?? (request()->attributes->has('csp_nonce') ? request()->attributes->get('csp_nonce') : (app()->bound('view') && app('view')->shared('cspNonce') ? app('view')->shared('cspNonce') : null));
+    $nonceAttr = !empty($cspNonceValue) ? 'nonce="' . e($cspNonceValue) . '"' : '';
+@endphp
 
 <x-misc.label :for="$id" :label="$label" :required="$isRequired" :labelClass="$labelClass" />
 
@@ -55,7 +61,7 @@
             class="datepicker-native-fallback"
             tabindex="-1"
             aria-hidden="true"
-            style="position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; margin: 0; padding: 0; border: none;"
+            style="position: absolute; opacity: 0.001; width: 1px; height: 1px; pointer-events: none; border: none; padding: 0; margin: 0;"
             @if($minDate) min="{{ $minDate }}" @endif
             @if($maxDate) max="{{ $maxDate }}" @endif
             @disabled($disabled || $readonly)
@@ -100,7 +106,7 @@
         class="datepicker-native-fallback"
         tabindex="-1"
         aria-hidden="true"
-        style="position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; margin: 0; padding: 0; border: none;"
+        style="position: absolute; opacity: 0.001; width: 1px; height: 1px; pointer-events: none; border: none; padding: 0; margin: 0;"
         @if($minDate) min="{{ $minDate }}" @endif
         @if($maxDate) max="{{ $maxDate }}" @endif
         @disabled($disabled || $readonly)
@@ -119,14 +125,14 @@
 
 @once
     @push('styles')
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" {!! $nonceAttr !!}>
     @endpush
 
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr" {!! $nonceAttr !!}></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js" {!! $nonceAttr !!}></script>
         
-        <script>
+        <script {!! $nonceAttr !!}>
             (function() {
                 // Localização em Português autônoma (garante funcionamento mesmo se o pt.js externo falhar)
                 const ptLocaleInline = {
@@ -186,8 +192,18 @@
 
                         // Máscara dinâmica durante a digitação
                         input.addEventListener('input', function(e) {
-                            const formatted = formatDateMask(input.value);
-                            input.value = formatted;
+                            const raw = input.value;
+                            const formatted = formatDateMask(raw);
+
+                            if (raw !== formatted) {
+                                const pos = input.selectionEnd || 0;
+                                input.value = formatted;
+                                let newPos = pos;
+                                if ((pos === 2 || pos === 5) && formatted.length > pos && formatted.charAt(pos) === '/') {
+                                    newPos = pos + 1;
+                                }
+                                input.setSelectionRange(newPos, newPos);
+                            }
 
                             // Quando a data estiver completa (10 caracteres), sincroniza com flatpickr e fallback nativo
                             if (formatted.length === 10) {
@@ -196,9 +212,9 @@
                                 const month = parseInt(parts[1], 10) - 1;
                                 const year = parseInt(parts[2], 10);
 
-                                if (month >= 0 && month < 12 && day >= 1 && day <= 31 && year >= 1000) {
+                                if (month >= 0 && month < 12 && day >= 1 && day <= 31 && year >= 1000 && year <= 2999) {
                                     const d = new Date(year, month, day);
-                                    if (!isNaN(d.getTime())) {
+                                    if (d.getFullYear() === year && d.getMonth() === month && d.getDate() === day) {
                                         if (input._flatpickrInstance) {
                                             input._flatpickrInstance.setDate(d, false, 'd/m/Y');
                                         }
@@ -213,10 +229,11 @@
                         // Facilita remoção da barra com Backspace
                         input.addEventListener('keydown', function(e) {
                             if (e.key === 'Backspace') {
-                                const val = this.value;
                                 const pos = this.selectionStart;
-                                if (pos > 0 && val.charAt(pos - 1) === '/') {
+                                const endPos = this.selectionEnd;
+                                if (pos === endPos && (pos === 3 || pos === 6) && this.value.charAt(pos - 1) === '/') {
                                     e.preventDefault();
+                                    const val = this.value;
                                     const newVal = val.slice(0, pos - 2) + val.slice(pos);
                                     this.value = formatDateMask(newVal);
                                     const newPos = Math.max(0, pos - 2);
@@ -296,11 +313,18 @@
 
                                 if (input._flatpickrInstance) {
                                     input._flatpickrInstance.toggle();
-                                } else if (nativePicker && typeof nativePicker.showPicker === 'function') {
-                                    nativePicker.showPicker();
                                 } else if (nativePicker) {
-                                    nativePicker.focus();
-                                    nativePicker.click();
+                                    try {
+                                        if (typeof nativePicker.showPicker === 'function') {
+                                            nativePicker.showPicker();
+                                        } else {
+                                            nativePicker.focus();
+                                            nativePicker.click();
+                                        }
+                                    } catch (err) {
+                                        console.warn('Fallback datepicker não suportado:', err);
+                                        input.focus();
+                                    }
                                 }
                             });
                         }

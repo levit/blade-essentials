@@ -95,6 +95,15 @@ class FieldGroup2ComponentsTest extends TestCase
         $this->assertMatchesRegularExpression('/<button[^>]*disabled/i', $html);
     }
 
+    public function test_datepicker_includes_csp_nonce_in_styles_and_scripts(): void
+    {
+        $html = Blade::render('<div><x-field.datepicker nameField="data_csp" :cspNonce="$nonce" /></div>@stack("styles")@stack("scripts")', ['nonce' => 'xyz-nonce-123']);
+
+        $this->assertStringContainsString('nonce="xyz-nonce-123"', $html);
+        $this->assertMatchesRegularExpression('/<link[^>]*nonce="xyz-nonce-123"/', $html);
+        $this->assertMatchesRegularExpression('/<script[^>]*nonce="xyz-nonce-123"/', $html);
+    }
+
     public function test_datetime_component_renders_correctly(): void
     {
         $html = Blade::render('<x-field.datetime nameField="criado_em" label="Criado em" value="2026-10-10 15:30:00" />');
